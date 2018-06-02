@@ -5,13 +5,12 @@
  */
 package test.java;
 
-import java.util.regex.*;
 /**
  *
  * @author Brian
  */
-public class ListLexer extends Lexer{
-    int FLAG=1;
+public class LookaheadLexer extends Lexer{
+    //int FLAG=1;
     public static int ID = 2;
     public static int LBRACK = 3;
     public static int RBRACK = 4;
@@ -39,7 +38,7 @@ public class ListLexer extends Lexer{
     };
     public String getTokenName(int x) {return tokenNames[x]; }
     
-    public ListLexer(String input) {super(input);}
+    public LookaheadLexer(String input) {super(input);}
     
     boolean isLETTER() { return c>='a'&&c<='z' || c>='A'&&c<='Z'; }
     
@@ -59,13 +58,19 @@ public class ListLexer extends Lexer{
         return false;
     }
     
+    boolean isTerminalName(String foo){
+        if (foo) 
+        
+    }
+    
 
 public Token nextToken(){
     //System.out.println("Working on " + c);
     while ( c != EOF ) {
         switch (c) {
             case ' ': case '\t': case '\n': case '\r': WS(); continue;  
-            case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': return NUMBER(); //continue;     
+            case '1': case '2': case '3': case '4': case '5': case '6': case '7': case '8': case '9': case '0': return NUMBER(); //continue; 
+            
             case '/': consume(); COMMENT(); continue;
             case '[': consume(); return new Token(LBRACK, "[");
             case ']': consume(); return new Token(RBRACK, "]");
@@ -126,96 +131,9 @@ Token COMMENT(){
 
 
 
-
-
-
-
-/*
-
-Token LBRACE(){
-    
-    return new Token(LBRACE, "[");
-}
-
-Token EQUALS(){
-    //consume();
-    return new Token(EQUALS, "=");
-}
-
-Token LBRACK(){
-
-    return new Token(LBRACK, "{");
-    
-}
-
-Token RBRACK(){
-
-    consume();
-    return new Token(RBRACK, "}");
-}
-
-Token LOPTIONAL() {
-    System.out.println("Left Optional");
-    StringBuilder lbuf = new StringBuilder();
-    do {
-        lbuf.append(c);
-        
-        consume();
-        
-        
-        if (c == '=') { 
-            match('='); 
-            EQUALS(); 
-        }
-        if (c == ',') { 
-            match(',');
-            System.out.println("COMMA");
-        }    
-        
-            
-        
-       
-            //return new Token(ID, lbuf.toString());
-        
-    } while ( isID() );
-    //match('='); new Token(EQUALS, "=");
-    return new Token(ID, lbuf.toString());
-}
-
-Token ROPTIONAL(){
-    //match('='); 
-    System.out.println("Right Optional");
-    StringBuilder rbuf = new StringBuilder();
-    do {  
-        rbuf.append(c);
-        consume();
-        
-        if (c == '=') { 
-            match('='); 
-            EQUALS(); 
-        }
-        if (c == ',') { 
-            match(',');
-            System.out.println("COMMA");
-        }    
-
-        
-        
-        
-        
-    } while ( isID() );
-    
-    match(']');
-    return new Token(ID, rbuf.toString());
-}
-
-
-
-*/
 void WS() {
     
     while ( c==' ' || c =='\t' || c == '\n' || c == '\r') consume();
 }
-
+    
 }
-

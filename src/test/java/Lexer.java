@@ -22,7 +22,6 @@ public abstract class Lexer {
     }
     
     public void consume() {
-        System.out.println("Consuming " + c);
         p++;
         if (p >= input.length() ) c = EOF;
         else c = input.charAt(p);
@@ -33,5 +32,9 @@ public abstract class Lexer {
         if (c == x) consume();
         else throw new Error("expecting "+x+"; found "+c);
     }
+    
+    public abstract Token nextToken();
+    abstract void WS();
+    public abstract String getTokenName(int x);
     
 }

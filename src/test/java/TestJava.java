@@ -19,27 +19,35 @@ public class TestJava {
      */
     public static void main(String[] args) throws IOException, FileNotFoundException{
 
-        Scanner inputStream = null;
+        ///Scanner inputStream = null;
         //Scanner inputStream = new Scanner(new File("D:\\testfile.txt"));
-        //BufferedReader inStream = null;
+        BufferedReader inputStream = null;
         
         try {
 
-            /*
-            inStream = new BufferedReader(new FileReader("D:\\testfile.txt"));
+            
+            inputStream = new BufferedReader(new FileReader("D:\\testfile.txt"));
 
             String l;
-            
-            while ((l = inStream.readLine() ) != null) {
-                System.out.println("Found string - " + l);
-                ListLexer lexer = new ListLexer(l);
+            //Token t = lexer.nextToken();
+            while ((l = inputStream.readLine() ) != null) {
+                System.out.println("Line is " + l);
+                //ListLexer lexer = new ListLexer(l);
+                //Token t = lexer.nextToken();
+                LookaheadLexer lexer = new LookaheadLexer(l);
+                LookaheadParser parser = new LookaheadParser(lexer, 2);
+                parser.graph();
                 
-                Token t = lexer.nextToken();
-                System.out.println("Token is " + t);
+                //while (t.type != Lexer.EOF_TYPE) {
+                    //System.out.print(t);
+                    //t = lexer.nextToken();
+                //}
+                
+                //System.out.println(t);
             }
-          */
-            
-                inputStream = new Scanner(new BufferedReader(new FileReader("D:\\testfile.txt")));   
+          
+            /*
+                inputStream = new BufferedReader(new FileReader("D:\\testfile.txt")));   
                 while (inputStream.hasNext()) {
                 String s = inputStream.next();
                 //System.out.println("String is " + s);
@@ -49,7 +57,7 @@ public class TestJava {
                 Token t = lexer.nextToken();
                 System.out.println("Token is " + t);
             }
-            
+            */
             
             
             
