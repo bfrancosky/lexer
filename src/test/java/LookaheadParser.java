@@ -5,6 +5,8 @@
  */
 package test.java;
 
+import java.io.IOException;
+
 /**
  *
  * @author Brian
@@ -12,176 +14,122 @@ package test.java;
 public class LookaheadParser extends Parser{
     
     public LookaheadParser (Lexer input, int k) {
-        super(input, k);
-       
+        super(input, k);    
     }
     
-    void graph() {
-        System.out.println("Found graph");
-        //System.out.println("Input - " + input.toString());
-        //System.out.println("K - " + k);
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        System.out.println("LA1 - " + LT(1));
-        System.out.println("LA2 - " + LT(2));
+    public void graph() {
+        if ( LA(1) == LookaheadLexer.RBRACE) {
+            throw new Error("EOF"); 
+        }
         
-        if (LookaheadLexer.ID).equals("strict") 
-        if (LA(1) == LookaheadLexer.ID) { };
-        
-        match(LookaheadLexer.LBRACE); 
-        do {
-            //stmt_list();
-        } while (LA(1) != (LookaheadLexer.RBRACK)); 
-        //else throw new Error("Expecting ID or stmt_list; found"+LT(1));
+        if (LA(1)==LookaheadLexer.ID && LA(2)==LookaheadLexer.ID) {
+            match(LookaheadLexer.ID);
+            match(LookaheadLexer.ID);
+        }
+        else stmt_list();
     }
     
     void stmt_list() {
-        System.out.println("Found stmt_list");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        
-        stmt();
-       
-            
-                        
+        stmt(); 
+        if ( LA(1) == LookaheadLexer.SEMIC) match(LookaheadLexer.SEMIC);                  
     }
     
     void stmt() {
-        System.out.println("Found stmt");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        attr_stmt();
-               
+        if (LA(1)==LookaheadLexer.ID && LA(2)==LookaheadLexer.ARROW) edge_stmt();
+        else if (LA(1)==LookaheadLexer.ID && LA(2)==LookaheadLexer.LBRACK) node_stmt();
+        
+        else throw new Error("Expecting an ID; found"+LT(1));         
     }
     
     void attr_stmt() {
-        System.out.println("Found attr_stmt");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        
-      
-        attr_list();
+ 
     }
     
     void attr_list() {
-        System.out.println("Found attr_list");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        
+        if (LA(1) == LookaheadLexer.LBRACK){
+  
+            match(LookaheadLexer.LBRACK);
+            do {
+                
             a_list();
             
-        
-        //else throw new Error("Expecting a_list or attr_list; found"+LT(1));
+            } while ( !(LA(1)==LookaheadLexer.RBRACK));
+         
+            
+            
+        }
+         
+        if (LA(1) == LookaheadLexer.ID && LA(2) == LookaheadLexer.ID) {
+            System.out.println("Secondary attr list condition");
+            match(LookaheadLexer.ID);
+            do {
+                System.out.println("Secondary attr list loop");
+            match(LookaheadLexer.ID);
+            } while ( (LA(1)==LookaheadLexer.ID));
+        }
+        if ( LA(1) == LookaheadLexer.RBRACK) match(LookaheadLexer.RBRACK);
+        else throw new Error("Expecting a_list or attr_list; found"+LT(1));
     }
     
     void a_list() {
-        System.out.println("Found a_list");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        if (LA(1)==LookaheadLexer.ID) {
+
+        if (LA(1) == LookaheadLexer.ID && LA(2) == LookaheadLexer.EQUALS){
+
+
             match(LookaheadLexer.ID);
+            match(LookaheadLexer.EQUALS);
+            do {
+
+            match(LookaheadLexer.ID); 
+            if ( LA(1) == LookaheadLexer.PERIOD) match(LookaheadLexer.PERIOD);
+            if ( LA(1) == LookaheadLexer.NUMBER) match(LookaheadLexer.NUMBER);
+            if ( LA(1) == LookaheadLexer.PERIOD) match(LookaheadLexer.PERIOD);
+            if ( LA(1) == LookaheadLexer.NUMBER) match(LookaheadLexer.NUMBER);
+            if ( LA(1) == LookaheadLexer.PERIOD) match(LookaheadLexer.PERIOD);
+            if ( LA(1) == LookaheadLexer.NUMBER) match(LookaheadLexer.NUMBER);
+            if ( LA(1) == LookaheadLexer.PERIOD) match(LookaheadLexer.PERIOD);
+            if ( LA(1) == LookaheadLexer.NUMBER) match(LookaheadLexer.NUMBER);
+            if ( LA(1) == LookaheadLexer.BSLASH) match(LookaheadLexer.BSLASH);
+            } while ( (LA(1)==LookaheadLexer.ID));
             
-            match('=');
-            match(LookaheadLexer.ID);
+            while ( (LA(1)==LookaheadLexer.COMMA)){
+
+                if ( LA(1) == LookaheadLexer.COMMA) match(LookaheadLexer.COMMA);
+
+                a_list();
+            }
+            while ( (LA(1)==LookaheadLexer.SEMIC)){
+
+                a_list();
+            }
+
         }
-        else throw new Error("Expecting ID or _list; found"+LT(1));
+
+        else throw new Error("Expecting a_list; found"+LT(1));
         
     }
     
     void edge_stmt() {
-        System.out.println("Found edge_stmt");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        node_id();
-        subgraph();
-        edgeRHS();
-        match(LookaheadLexer.LBRACE);
-            a_list();
-            match(LookaheadLexer.RBRACE);
-        
+        if (LA(1)==LookaheadLexer.ID) match(LookaheadLexer.ID);edgeRHS(); 
     }
     
     void edgeRHS() {
-        System.out.println("Found edgeRHS");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        match(LookaheadLexer.ARROW);
-        node_id();
-        subgraph();
-        edgeRHS();
+        if ( LA(1)==LookaheadLexer.ARROW && LA(2)==LookaheadLexer.ID ){
+            match(LookaheadLexer.ARROW);
+            match(LookaheadLexer.ID);          
+        }
+        else throw new Error("Expecting arrow or ID; found"+LT(1));
     }
     
+    
     void node_stmt() {
-        System.out.println("Found node_stmt");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
         node_id();
         attr_list();
     }
     
     void node_id() {
-        System.out.println("Found node_id");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        match(LookaheadLexer.ID);
-        port();
+        if (LA(1) == LookaheadLexer.ID) match(LookaheadLexer.ID);
+        else throw new Error("Expecting ID; found"+LT(1));
+    }
     }
     
-    void port() {
-        System.out.println("Found port");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        match(':');
-        match(LookaheadLexer.ID);
-        match(':');
-        compass_pt();
-        
-    }
-    
-    void subgraph() {
-        System.out.println("Found subgraph");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        match(LookaheadLexer.ID);
-        match(LookaheadLexer.ID);
-        match('{');
-        stmt_list();
-        match('}');
-        
-    }
-    
-    void compass_pt() {
-        System.out.println("Found compass_pt");
-        System.out.println("LA1 - " + LA(1));
-        System.out.println("LA2 - " + LA(2));
-        
-        
-    }
-    
-    /*
-    void element() {
-        if ( LA(1) == LookaheadLexer.ID && LA(2)==LookaheadLexer.EQUALS ) {
-            match(LookaheadLexer.ID);
-            match(LookaheadLexer.EQUALS);
-            match(LookaheadLexer.ID);
-        }
-        else if ( LA(1)==LookaheadLexer.ID ) match(LookaheadLexer.ID);
-        else if ( LA(1)==LookaheadLexer.LBRACK ) list();
-        else throw new Error("expecting name or list; found " +LT(1));
-        
-    }
-    
-    void list() {
-        if ( LA(1) == LookaheadLexer.ID && LA(2)==LookaheadLexer.EQUALS ) {
-            match(LookaheadLexer.ID);
-            match(LookaheadLexer.EQUALS);
-            match(LookaheadLexer.ID);
-        }
-        else if ( LA(1)==LookaheadLexer.ID ) match(LookaheadLexer.ID);
-        else if ( LA(1)==LookaheadLexer.LBRACK ) list();
-        else throw new Error("expecting name or list; found " +LT(1));
-        
-    }
-*/
-
-}
