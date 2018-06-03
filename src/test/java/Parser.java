@@ -35,7 +35,7 @@ public abstract class Parser {
       public Token LT(int i) { return lookahead[(p+i-1) % k];}
       
       public int LA(int i) { return LT(i).type; }
-    public  void match(int x){
+      public  void match(int x){
         if ( LA(1) == x ) consume();
         else throw new Error("expecting "+input.getTokenName(x) + "; found " + LT(1));  
         }

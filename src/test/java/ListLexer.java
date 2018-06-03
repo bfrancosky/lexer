@@ -46,9 +46,10 @@ public class ListLexer extends Lexer{
     boolean isNUMBER() { return (c >='0' && c <= '9') ; }
     
     boolean isID() { 
-        if (Character.toString(c).matches("^[A-Za-z_-][A-Za-z0-9_-]*$")) {
+        if (Character.toString(c).matches("^[A-Za-z_-\"][A-Za-z0-9_-\"]*$")) {
             return true;
         } 
+        
         return false;
     }
         
@@ -78,7 +79,7 @@ public Token nextToken(){
             case '*': consume(); return new Token(COMMENT, "*");
             case '.': consume(); return new Token(PERIOD, ".");
             case ',': consume(); return new Token(COMMA, ",");
-            case '"': consume(); return new Token(QUOTE, "\"");
+            case '\"': consume(); return new Token(QUOTE, "\"");
             case '-': consume(); match('>'); return new Token(ARROW, "->");
             
             default: 

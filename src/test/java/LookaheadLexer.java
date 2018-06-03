@@ -36,7 +36,7 @@ public class LookaheadLexer extends Lexer{
         "RBRACE", "COMMENT", "ARROW", "PERIOD", "NUMBER", "COLON", "SEMIC", "COMMA",
         "QUOTE", "FSLASH", "BSLASH"
     };
-    public String getTokenName(int x) {return tokenNames[x]; }
+    public String getTokenName(int x) {return LookaheadLexer.tokenNames[x]; }
     
     public LookaheadLexer(String input) {super(input);}
     
@@ -45,9 +45,13 @@ public class LookaheadLexer extends Lexer{
     boolean isNUMBER() { return (c >='0' && c <= '9') ; }
     
     boolean isID() { 
-        if (Character.toString(c).matches("^[A-Za-z_-][A-Za-z0-9_-]*$")) {
+        if (Character.toString(c).matches("^[A-Za-z_-][A-Za-z0-9_-]*$"))  {
             return true;
         } 
+        else if (Character.toString(c).matches("\""))  {
+            return true;
+        }
+    
         return false;
     }
         
@@ -59,13 +63,13 @@ public class LookaheadLexer extends Lexer{
     }
     
     boolean isTerminalName(String foo){
-        if (foo) 
+        //f (foo) 
+        return false;
         
     }
     
 
 public Token nextToken(){
-    //System.out.println("Working on " + c);
     while ( c != EOF ) {
         switch (c) {
             case ' ': case '\t': case '\n': case '\r': WS(); continue;  
@@ -83,8 +87,9 @@ public Token nextToken(){
             case '*': consume(); return new Token(COMMENT, "*");
             case '.': consume(); return new Token(PERIOD, ".");
             case ',': consume(); return new Token(COMMA, ",");
-            case '"': consume(); return new Token(QUOTE, "\"");
+            //case '"': consume(); return new Token(QUOTE, "\"");
             case '-': consume(); match('>'); return new Token(ARROW, "->");
+            //case '>': consume(); return new Token(ARROW, "->");
             
             default: 
                 
@@ -97,10 +102,13 @@ public Token nextToken(){
 
 Token ID() {
     StringBuilder buf = new StringBuilder();
+    
     do {   
         buf.append(c);
         consume(); 
     } while ( isID() );
+    
+    
 
     return new Token(ID, buf.toString());
     }

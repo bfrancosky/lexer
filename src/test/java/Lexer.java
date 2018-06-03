@@ -13,18 +13,25 @@ public abstract class Lexer {
     public static final char EOF = (char)-1;
     public static final int EOF_TYPE = 1;
     String input;
-    int p = 0;
+    int i = 0;
     char c;
     
     public Lexer(String input){
         this.input = input;
-        c = input.charAt(p);
+        c = input.charAt(i);
+    }
+   
+    public void consume() {
+        i++;
+        if (i >= input.length() ) c = EOF;
+        else c = input.charAt(i);
+        
     }
     
-    public void consume() {
-        p++;
-        if (p >= input.length() ) c = EOF;
-        else c = input.charAt(p);
+       public void advance() {
+        i++;
+        if (i >= input.length() ) c = EOF;
+        else c = input.charAt(i);
         
     }
     

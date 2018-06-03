@@ -19,16 +19,9 @@ public class Token {
     
     }
     
-    /*
-    public String toString(){
-        String tname = ListLexer.tokenNames[type] + " [ " + text + " ] ";
-        return tname;
-    }
-    */
-    
     
     public String toString(){
-        String tname = ListLexer.tokenNames[type];
+        String tname = LookaheadLexer.tokenNames[type];
         return "<'"+text+"',"+tname+">";
         
     }

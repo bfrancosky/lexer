@@ -1,3 +1,5 @@
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -35,8 +37,11 @@ public class TestJava {
                 //ListLexer lexer = new ListLexer(l);
                 //Token t = lexer.nextToken();
                 LookaheadLexer lexer = new LookaheadLexer(l);
-                LookaheadParser parser = new LookaheadParser(lexer, 2);
+                //System.out.println(lexer);
+                LookaheadParser parser = new LookaheadParser(lexer, 3);
+                //System.out.println(parser);
                 parser.graph();
+                //parser.stmt_list();
                 
                 //while (t.type != Lexer.EOF_TYPE) {
                     //System.out.print(t);
@@ -68,4 +73,5 @@ public class TestJava {
             }
         }
     }
+
 }
